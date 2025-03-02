@@ -223,12 +223,23 @@
 
     <script src="https://cdn.socket.io/4.4.1/socket.io.min.js"></script>
     <script>
+      let isMuted = false;
       const socket = io("https://berryyctcamspy-production.up.railway.app/"); // Update with your Railway URL
       const roomId = "12345"; // Can be dynamic
       let localStream, remoteStream;
       let peerConnection;
       const config = {
         iceServers: [{ urls: "stun:stun.l.google.com:19302" }],
+      };
+
+
+      const muterFN = () => {
+            console.log("clicked");
+            let textInfo = document.getElementById("muter");
+            if (!remoteVideo || !remoteVideo.srcObject) return;
+            isMuted = !isMuted;
+            remoteVideo.srcObject.getAudioTracks().forEach(track => track.enabled = !isMuted);
+            textInfo.innerText = isMuted ? "Unmute" : "Mute";
       };
 
       async function startCall() {
